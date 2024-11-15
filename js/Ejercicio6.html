@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Juego de la Serpiente en Canvas</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+            display: block;
+            margin: auto;
+        }
+        h3 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h3>P:Pausas</h3>
+<canvas id="canvasJuego" width="400" height="400"></canvas>
+<script>
+    const canvas = document.getElementById("canvasJuego");
+    const ctx = canvas.getContext("2d");
+
+    let x = 200;
+    let y = 200;
+    let dx = 0;
+    let dy = 0;
+    let juegoPausado = false;
+
+    const dibujarJugador = () => {
+        ctx.fillStyle = "green";
+        ctx.fillRect(x, y, 20, 20);
+    };
+
+    const limpiarCanvas = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    };
+
+    const actualizarJuego = () => {
+        if (!juegoPausado) {
+            limpiarCanvas();
+            x += dx;
+            y += dy;
+
+            if (x < 0){
+                x = canvas.width - 20;
+            } 
+            if (x >= canvas.width){
+                x = 0;
+            } 
+            if (y < 0){
+                y = canvas.height - 20;
+            } 
+            if (y >= canvas.height){
+                y = 0;
+            } 
+
+            dibujarJugador();
+        } else {
+            ctx.font = "30px Arial";
+            ctx.fillStyle = "red";
+            ctx.textAlign = "center";
+            ctx.fillText("Juego en Pausa", canvas.width / 2, canvas.height / 2);
+        }
+    };
+
+    const cambiarDireccion = (evento) => {
+        const tecla = evento.keyCode;
+        if (tecla === 37) { 
+            dx = -2;
+            dy = 0;
+        } else if (tecla === 38) {
+            dx = 0;
+            dy = -2;
+        } else if (tecla === 39) {
+            dx = 2;
+            dy = 0;
+        } else if (tecla === 40) { 
+            dx = 0;
+            dy = 2;
+        } else if (tecla === 80) { 
+            juegoPausado = !juegoPausado;
+            dx = 0;
+            dy = 0;
+        }
+    };
+
+    const detenerMovimiento = (evento) => {
+        const tecla = evento.keyCode;
+        if ([37, 38, 39, 40].includes(tecla)) {
+            dx = 0;
+            dy = 0;
+        }
+    };
+
+    document.addEventListener("keydown", cambiarDireccion,false);
+    document.addEventListener("keyup", detenerMovimiento,false);
+
+    const bucleJuego = () => {
+        actualizarJuego();
+        requestAnimationFrame(bucleJuego);
+    };
+
+    bucleJuego();
+</script>
+</body>
+</html>

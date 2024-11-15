@@ -1,0 +1,105 @@
+/* Estilos generales */
+body {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    width: 100vw;
+    height: 100vh;
+    gap: 10px;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #f0f0f0; /* Fondo claro para contraste */
+}
+
+/* Contenedor de colores */
+#colores {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    padding: 10px;
+    box-sizing: border-box;
+    grid-column: 1;
+    overflow-y: auto;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    margin: 10px;
+}
+
+/* Botones circulares estilo paleta */
+#colores button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: currentColor;
+}
+
+#colores button:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+#colores button:active {
+    border-color: black;
+    transform: scale(1.2);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+#colores button:focus {
+    border-color: black 1px;
+    outline: none;
+}
+
+/* Contenedor de pizarra */
+table {
+    grid-column: 2;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    margin: 10px;
+    border-collapse: collapse;
+}
+table td {
+    width: 10px;
+    height: 10px;
+    padding: 0;
+    border: none;
+}
+
+#reiniciar {
+    display: block;
+    width: calc(100% - 20px);
+    margin: 10px auto;
+    padding: 15px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    background-color: #fff;
+    border: 2px solid #333;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+#reiniciar:hover {
+    transform: translateY(-3px);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+    background-color: #333;
+    color: #fff;
+}
+
+#reiniciar:active {
+    transform: scale(0.95);
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#reiniciar:focus {
+    outline: none;
+}
