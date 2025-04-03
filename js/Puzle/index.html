@@ -1,18 +1,89 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rompecabezas</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <title>Canvas Zoom con Array Dinámico</title>
+  <style>
+    body { margin: 0; padding: 0; }
+    canvas { display: block; background: #f0f0f0; }
+  </style>
 </head>
 <body>
-    <div id="piezas-rompecabezas" class="soltable"></div>
-    <div id="casillas-rompecabezas"></div>
-    <div id="cont-but">
-        <button>Reiniciar</button>
-    </div>
-    
-    <script type="module" src="script.js"></script>
+  <canvas id="myCanvas"></canvas>
+  <script>
+    // Array de objetos con fecha y valor (valor en formato string que convertiremos a número)
+    const data = [
+      { fecha: new Date(), valor: "10" },
+      { fecha: new Date(), valor: "20" },
+      { fecha: new Date(), valor: "30" },
+      { fecha: new Date(), valor: "25" },
+      { fecha: new Date(), valor: "40" }
+      // Puedes agregar más elementos según necesites
+    ];
+
+    const canvas = document.getElementById('myCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Ajustar el tamaño del canvas al tamaño de la ventana
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      offsetY = canvas.height / 2;
+      draw();
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // Variables para el zoom y la posición inicial
+    let scale = 1;
+    let offsetX = 50;
+    let offsetY = canvas.height / 2;
+
+    // Función para dibujar el gráfico
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.strokeStyle = 'blue';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+
+      data.forEach((item, index) => {
+        // Convertir el valor a número para poder graficarlo
+        const numValue = parseFloat(item.valor);
+        // Calcular la posición X (espaciado fijo multiplicado por el factor de zoom)
+        const x = offsetX + index * 50 * scale;
+        // Calcular la posición Y (se invierte el eje Y para que valores altos se muestren arriba)
+        const y = offsetY - numValue * scale;
+        
+        if(index === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+        
+        // Dibujar un pequeño círculo en cada punto
+        ctx.fillStyle = 'red';
+        ctx.beginPath();
+        ctx.arc(x, y, 4, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath(); // Reinicia el path para seguir dibujando la línea
+        if(index === 0) ctx.moveTo(x, y);
+      });
+      ctx.stroke();
+    }
+
+    // Evento para manejar el zoom con la rueda del ratón
+    canvas.addEventListener('wheel', function(e) {
+      e.preventDefault(); // Prevenir el comportamiento por defecto del scroll
+      const zoomAmount = -e.deltaY * 0.001; // Ajusta la sensibilidad del zoom
+      scale += zoomAmount;
+      // Limitar el rango de zoom
+      if(scale < 0.1) scale = 0.1;
+      if(scale > 10) scale = 10;
+      draw();
+    });
+
+    draw();
+  </script>
 </body>
 </html>
